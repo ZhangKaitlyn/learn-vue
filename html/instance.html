@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Vue 实例 - vue.js</title>
+	<script src="../script/vue.js"></script>
+</head>
+<body>
+<h3>构造器</h3>
+
+<a href="http://cn.vuejs.org/v2/api/" target="_blank">Vued的API文档</a>
+<a href="http://cn.vuejs.org/v2/guide/components.html" target="_blank">Vue的组件系统</a>
+<script>
+	// Vue的根实例
+	var vm = new Vue({
+		// 选项
+	})
+
+	var MyComponent=Vue.extend({
+		// 扩展选项
+	})
+	// 所有的 `MyComponent` 实例都将以预定义的扩展选项被创建
+	var myComponentInstance=new MyComponent();
+</script>
+</body>
+</html>
