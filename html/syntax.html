@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>模板语法</title>
+	<link rel="stylesheet" href="">
+	<script src="../script/vue.js"></script>
+</head>
+<body>
+	<h3>插值</h3>
+
+	<h4>文本</h4>
+	<p>绑定文本使用 {{ }},v-once指令使数据改变时，插值处的内容不会更新</p>
+	<span id="app1">message:{{msg}}</span>
+
+	<h4>纯HTML</h4>
+	<p>绑定html v-html指令</p>
+	<span id="app2" v-html="msg"></span>
+
+	<h4>属性</h4>
+	<p>绑定HTML属性 v-bind指令</p>
+	<div v-bind:class="dynamicClass" id="app3">
+		我的class为 {{dynamicClass}}
+		<button v-bind:disabled="someDynamicCondition">Button</button>
+	</div>
+
+	<h4>使用JavaScript表达式</h4>
+	<span id="app4">{{a}}+{{b}}={{a+b}}</span>
+
+	<h4>过滤器 只能在{{ }}中使用</h4>
+	<div id="app5">{{message | capitalize}}</div>
+
+	<script>
+		var app1=new Vue({
+			el:"#app1",
+			data:{
+				msg:"开始计时"
+			}
+		})
+		var i=0;
+		document.getElementById("app1").onclick=function() {
+			setInterval(function(){
+				app1.msg=i;
+				i++;
+			},1000)
+		}
+		
+		var app2=new Vue({
+			el:"#app2",
+			data:{
+				msg:"<i>Hello Vue</i>"
+			}
+		})
+
+		var app3=new Vue({
+			el:"#app3",
+			data:{
+				dynamicClass:"dynamicClass",
+				someDynamicCondition:true
+			}
+		})
+
+		var app4=new Vue({
+			el:"#app4",
+			data:{
+				a:4,
+				b:10
+			}
+		})
+
+		var app5=new Vue({
+			el:"#app5",
+			data:{
+				message:"hello"
+			},
+			filters: {
+				capitalize: function (value) {
+					if (!value) return '';
+					value = value.toString();
+					return value.charAt(0).toUpperCase() + value.slice(1)
+				}
+			}
+		})
+	</script>
+</body>
+</html>

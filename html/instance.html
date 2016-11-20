@@ -3,23 +3,77 @@
 <head>
 	<title>Vue 实例 - vue.js</title>
 	<script src="../script/vue.js"></script>
+	<style>
+		img{
+			width: 50%;
+			height: auto;
+			float: left;
+		}
+	</style>
 </head>
 <body>
 <h3>构造器</h3>
-
 <a href="http://cn.vuejs.org/v2/api/" target="_blank">Vued的API文档</a>
 <a href="http://cn.vuejs.org/v2/guide/components.html" target="_blank">Vue的组件系统</a>
+
+<h3>属性与方法</h3>
+<div id="result1-1"></div>
+<div id="result1-2"></div>
+<div id="result1-3"></div>
+<p>说明设置属性会影响到原始数据，反之亦然</p>
+<div id="result2-1"></div>
+<div id="result2-2"></div>
+<div id="result2-3"></div>
+
+<h3>实例生命周期</h3>
+<div id="result3-1"></div>
+<h3>生命周期图示</h3>
+<img src="../images/lifecycle.png" alt="Vue中实例的生命周期">
+<img src="../images/hook.png" alt="Vue中实例的生命周期的钩子">
 <script>
 	// Vue的根实例
 	var vm = new Vue({
 		// 选项
 	})
-
 	var MyComponent=Vue.extend({
 		// 扩展选项
 	})
 	// 所有的 `MyComponent` 实例都将以预定义的扩展选项被创建
 	var myComponentInstance=new MyComponent();
+
+	var data1={a:1};
+	var vm1=new Vue({
+		data:data1
+	})
+	document.getElementById("result1-1").innerHTML="vm1.a===data1.a为"+(vm1.a===data1.a);
+	// 设置属性也会影响到原始数据
+	vm1.a=2;
+	document.getElementById("result1-2").innerHTML="设置vm1.a为2后，data1.a的值为"+data1.a;
+	// ... 反之亦然
+	data1.a=3;
+	document.getElementById("result1-3").innerHTML="设置data1.a为3后，vm1.a的值为"+vm1.a;
+
+	var data2={a:1};
+	var vm2=new Vue({
+		el:"#result2-2",
+		data:data2
+	})
+	document.getElementById("result2-1").innerHTML="vm2.$data===data2为"+(vm2.$data===data2);
+	document.getElementById("result2-2").innerHTML="vm2.$el===document.getElementById('result2-2')为"+(vm2.$el===document.getElementById('result2-2'));
+	vm2.$watch("a",function(newVal,oldVal){
+		document.getElementById("result2-3").innerHTML="oldVal为"+oldVal+",newVal为"+newVal;
+	})
+	vm2.a=3;
+
+	var vm3=new Vue({
+		data:{
+			a:1
+		},
+		created:function () {
+			// `this` 指向vm实例
+			document.getElementById("result3-1").innerHTML="a is:"+this.a;
+		}
+	})
 </script>
 </body>
 </html>
