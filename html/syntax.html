@@ -3,11 +3,13 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>模板语法</title>
+	<title>模板语法 - vue.js</title>
 	<link rel="stylesheet" href="">
 	<script src="../script/vue.js"></script>
 </head>
 <body>
+	<h2><a href="http://cn.vuejs.org/v2/guide/syntax.html" target="_blank">模板语法</a></h2>
+
 	<h3>插值</h3>
 
 	<h4>文本</h4>
@@ -30,6 +32,21 @@
 
 	<h4>过滤器 只能在{{ }}中使用</h4>
 	<div id="app5">{{message | capitalize}}</div>
+
+	<h3>指令</h3>
+
+	<h4>参数</h4>
+	<div id="app6">
+		<a :href="url">v-bind:href绑定的链接</a>
+		<span @click="doSomething">v-on:click绑定的事件</span>
+	</div>
+
+	<h4>修饰符</h4>
+	<div id="app7">
+		<form action="http://www.baidu.com" v-on:submit.prevent="onSubmit">
+			<button type="submit">不会提交的form</button>
+		</form>
+	</div>
 
 	<script>
 		var app1=new Vue({
@@ -79,6 +96,26 @@
 					if (!value) return '';
 					value = value.toString();
 					return value.charAt(0).toUpperCase() + value.slice(1)
+				}
+			}
+		})
+
+		var app6=new Vue({
+			el:"#app6",
+			data:{
+				url:"http://www.baidu.com",
+				doSomething:function(){
+					alert("v-bind:click绑定的事件");
+				}
+			}
+		})
+
+		var app7=new Vue({
+			el:"#app7",
+			data:{
+				onSubmit:function(e){
+					e.preventDefault();
+					console.log('sdkh');
 				}
 			}
 		})
