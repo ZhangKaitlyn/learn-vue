@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Class与style绑定 - vue.js</title>
+	<script src="../script/vue.js"></script>
+	<style>
+		.active{
+			color: green;
+		}
+		.text-danger{
+			color: red;
+		}
+	</style>
+</head>
+<body>
+	<h2>
+		<a href="http://cn.vuejs.org/v2/guide/class-and-style.html" target="_blank">Class与style绑定</a>
+	</h2>
+
+	<h3>绑定HTML Class</h3>
+
+	<h4>对象语法</h4>
+	<div id="app1" :class="{active:isActive,'text-danger':hasError}">通过v-bind:class动态切换class</div>
+	<div id="app2" :class="classObject">v-bind:class绑定一个对象</div>
+	<div id="app3" :class="classObject">绑定返回对象的计算属性</div>
+
+	<h4>数组语法</h4>
+	<div id="app4" :class="[activeClass,errorClass]">v-bind:class绑定一个数组</div>
+
+	<h4>组件<a href="http://cn.vuejs.org/v2/guide/components.html" target="_blank">Vue-组件</a></h4>
+	<div id="app5">
+		<my-component class="baz boo"></my-component>
+	</div>
+
+	<h3>绑定内联样式</h3>
+
+	<h4>对象语法</h4>
+	<div id="app6" :style="{color:activeColor,fontSize:fontSize+'px'}">链接v-bind:style</div>
+	<div id="app7" :style="styleObject">对象绑定样式</div>
+
+	<h4>数组语法</h4>
+	<div id="app8" :style="[baseStyle,overridingStyles]">数组语法绑定样式</div>
+
+	<h4>自动添加前缀</h4>
+	<div id="app9" :style="styleObject">自动给样式添加前缀</div>
+
+	<script>
+	var app1=new Vue({
+		el:"#app1",
+		data:{
+			isActive:true,
+			hasError:false
+		}
+	})
+	var app2=new Vue({
+		el:"#app2",
+		data:{
+			classObject:{
+				active:false,
+				'text-danger':true
+			}
+		}
+	})
+	var app3=new Vue({
+		el:"#app3",
+		data:{
+			isActive:true,
+			error:null
+		},
+		computed:{
+			classObject:function(){
+				return{
+					active:this.isActive && !this.error,
+					'text-danger':this.error && this.error.type==='string',
+				}
+			}
+		}
+	})
+	var app4=new Vue({
+		el:"#app4",
+		data:{
+			activeClass:'active',
+			errorClass:'text-danger'
+		}
+	})
+	var template={
+		template:"<p class='foo bar'>我有foo、bar、baz、boo这几个class</p>"
+	}
+	var app5=new Vue({
+		el:"#app5",
+		components:{
+			'my-component':template
+		}
+	})
+	var app6=new Vue({
+		el:"#app6",
+		data:{
+			activeColor:"red",
+			fontSize:30
+		}
+	})
+	var app7=new Vue({
+		el:"#app7",
+		data:{
+			styleObject:{
+				color:"red",
+				fontSize:"20px"
+			}
+		}
+	})
+	var app8=new Vue({
+		el:"#app8",
+		data:{
+			baseStyle:{color:"green"},
+			overridingStyles:{color:"red",border:"1px solid"}
+		}
+	})
+	var app9=new Vue({
+		el:"#app9",
+		data:{
+			styleObject:{
+				transform:"rotate(45deg)",
+				border:"1px solid",
+				width:"100px",
+				height:"100px"
+			}
+		}
+	})
+	</script>
+</body>
+</html>
