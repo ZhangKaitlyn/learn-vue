@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>条件渲染 - vue.js</title>
+	<script src="../script/vue.js"></script>
+</head>
+<body>
+	<h2>
+		<a href="http://cn.vuejs.org/v2/guide/conditional.html" target="_blank">条件渲染</a>
+	</h2>
+
+	<h3>条件渲染</h3>
+
+	<h4>v-if</h4>
+	<div id="app1">
+		<h5 v-if="ok">v-if == true</h5>
+		<h5 v-else>v-if != true</h5>
+	</div>
+	<div id="app2">
+		<template v-if="ok">
+			<h5>Title</h5>
+			<p>Paragraph 1</p>
+			<p>Paragraph 2</p>
+		</template>
+		<div v-if="ok">
+			<h5>Title2</h5>
+			<p>Paragraph 21</p>
+			<p>Paragraph 22</p>
+		</div>
+	</div>
+	<div id="app3">
+		<div v-if="Math.random()>0.5">Sorry</div>
+		<div v-else>Not Sorry</div>
+	</div>
+	<script>
+	var app1=new Vue({
+		el:"#app1",
+		data:{
+			ok:true
+		}
+	})
+	var app2=new Vue({
+		el:"#app2",
+		data:{
+			ok:true
+		}
+	})
+	var app3=new Vue({
+		el:"#app3"
+	})
+	</script>
+</body>
+</html>
