@@ -18,6 +18,8 @@
 		<h5 v-if="ok">v-if == true</h5>
 		<h5 v-else>v-if != true</h5>
 	</div>
+
+	<h4>template v-if</h4>
 	<div id="app2">
 		<template v-if="ok">
 			<h5>Title</h5>
@@ -30,9 +32,22 @@
 			<p>Paragraph 22</p>
 		</div>
 	</div>
+
+	<h4>v-else</h4>
 	<div id="app3">
 		<div v-if="Math.random()>0.5">Sorry</div>
 		<div v-else>Not Sorry</div>
+	</div>
+
+	<h4>v-show</h4>
+	<div id="app4">
+		<h5 v-show="ok">v-show 根据条件展示元素(不支持template语法)</h5>
+	</div>
+
+	<h4>v-if vs. v-show</h4>
+	<div>
+		<p>一般来说， v-if 有更高的切换消耗而 v-show 有更高的初始渲染消耗。</p>
+		<p>如果需要频繁切换使用 v-show 较好，如果在运行时条件不大可能改变则使用 v-if 较好。</p>
 	</div>
 	<script>
 	var app1=new Vue({
@@ -49,6 +64,12 @@
 	})
 	var app3=new Vue({
 		el:"#app3"
+	})
+	var app4=new Vue({
+		el:"#app4",
+		data:{
+			ok:true
+		}
 	})
 	</script>
 </body>
