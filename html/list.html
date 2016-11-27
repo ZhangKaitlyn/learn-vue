@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h2>
-		<a href="http://cn.vuejs.org/v2/guide/list.html">列表渲染</a>
+		<a href="http://cn.vuejs.org/v2/guide/list.html" target="_blank">列表渲染</a>
 	</h2>
 
 	<h3>v-for</h3>
@@ -37,6 +37,44 @@
 	</div>
 	
 	<h4><a href="http://cn.vuejs.org/v2/guide/components.html" target="_blank">组件</a>和 v-for</h4>
+	<div id="app5">
+		<input v-model="newTodoText" v-on:keyup.enter="addNewTodo" placeholder="Add a todo" 
+		>
+		<ul>
+			<li is="todo-item" v-for="(todo,index) in todos" :title="todo" v-on:remove="todos.splice(index,1)"></li>
+		</ul>
+	</div>
+
+	<h3>key</h3>
+	<p>建议尽可能使用 v-for 来提供 key ，除非迭代 DOM 内容足够简单，或者你是故意要依赖于默认行为来获得性能提升。</p>
+
+	<h3>数组更新检测</h3>
+
+	<h4>变异方法</h4>
+	<div>
+		<p>变异方法：会改变被这些方法调用的原始数组</p>
+		<p>push()、pop()、shift()、unshift()、splice()、sort()、reverse()</p>
+	</div>
+
+	<h4>重塑数组</h4>
+	<div>
+		<p>非变异方法：不会改变原始数组</p>
+		<p>filter()、concat()、slice()</p>
+	</div>
+
+	<h4>注意事项</h4>
+	<div>
+		<p>由于JavaScript的限制，Vue不能检测以下变动的数组</p>
+		<p>1.当你直接设置一个项的索引时</p>
+		<p>1.当你修改数组的长度时</p>
+	</div>
+
+	<h4>显示过滤/排序结果</h4>
+	<div id="app6">
+		<ul>
+			<li v-for="n in evenNumbers">{{n}}</li>
+		</ul>
+	</div>
 
 	<script>
 	var app1=new Vue({
@@ -71,6 +109,41 @@
 	})
 	var app4=new Vue({
 		el:"#app4"
+	})
+	Vue.component("todo-item",{
+		template:"<li>{{title}}<button @click='$emit(\"remove\")'>X</button></li>",
+		props:["title"]
+	})
+	var app5=new Vue({
+		el:"#app5",
+		data:{
+			newTodoText:"",
+			todos:[
+				"Do the dishes",
+				"Do the dishes1",
+				"Do the dishes2",
+				"Do the dishes3",
+			]
+		},
+		methods:{
+			addNewTodo:function(){
+				this.todos.push(this.newTodoText);
+				this.newTodoText=""
+			}
+		}
+	})
+	var app6=new Vue({
+		el:"#app6",
+		data:{
+			numbers:[1,2,3,4,5]
+		},
+		computed:{
+			evenNumbers:function(){
+				return this.numbers.filter(function(number){
+					return number % 2 ===0
+				})
+			}
+		}
 	})
 
 	</script>
