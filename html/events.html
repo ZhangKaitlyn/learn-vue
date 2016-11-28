@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>事件处理器 - vue.js</title>
+	<script src="../script/vue.js"></script>
+</head>
+<body>
+	<h2>
+		<a href="http://cn.vuejs.org/v2/guide/events.html" target="_blank">事件处理器</a>
+	</h2>
+
+	<h3>监听事件</h3>
+	<div id="app1">
+		<button type="button" v-on:click="counter+=1">增加1</button>
+		<p>这个按钮被点击了{{counter}}次。使用v-on指令监听DOM事件来触发一些JavaScript代码</p>
+	</div>
+
+	<h3>方法事件处理器</h3>
+	<div id="app2">
+		<p>v-on页可以接收一个定义的方法来调用</p>
+		<input type="text" v-model="greetingName">
+		<button type="button" v-on:click="greet">greet</button>
+	</div>
+
+	<h3>内联处理器方法</h3>
+	<div id="app3">
+		<p>v-on也可以用内联JavaScript语句</p>
+		<button type="button" v-on:click="say('HI',$event)">Say Hi</button>
+		<button type="button" v-on:click="say('What',$event)">Say Hi</button>
+	</div>
+
+	<h3>事件修饰符</h3>
+	<div id="app4" onclick="alert('子元素点击事件冒泡')">
+		<p>v-on:click.stop 阻止单击事件冒泡</p>
+		<button v-on:click.stop="doThis">v-on:click.stop 阻止单击事件冒泡</button>
+		<p>提交事件不再重载页面</p>
+		<form action="http://www.baidu.com" method="get" accept-charset="utf-8" v-on:submit.prevent v-on:click.stop>
+			<input type="text" name="" value="" placeholder="">
+			<button type="submit">提交</button>
+		</form>
+		<p>添加事件侦听器时使用事件捕获模式 v-on:click.capture</p>
+		<p>只当事件在该元素本身（而不是子元素）触发时触发回调 v-on:click.slf</p>
+	</div>
+
+	<h3>按键修饰符</h3>
+	<div id="app5">
+		<p>在该输入框中只有敲enter键才会弹出 Hello</p>
+		<input type="text" name="" value="" placeholder="" v-on:keyup.enter="sayHi">
+	</div>
+
+	<h3>为什么在HTML中监听事件？</h3>
+	<p>使用v-on监听事件的好处：</p>
+	<p>1.扫一眼 HTML 模板便能轻松定位在 JavaScript 代码里对应的方法</p>
+	<p>2.因为你无须在 JavaScript 里手动绑定事件，你的 ViewModel 代码可以是非常纯粹的逻辑，和 DOM 完全解耦，更易于测试。</p>
+	<p>3.当一个 ViewModel 被销毁时，所有的事件处理器都会自动被删除。你无须担心如何自己清理它们。</p>
+
+	<script>
+		var app1=new Vue({
+			el:"#app1",
+			data:{
+				counter:0
+			}
+		})
+		var app2=new Vue({
+			el:"#app2",
+			data:{
+				greetingName:""
+			},
+			methods:{
+				greet:function(){
+					if (this.greetingName=="") {
+						alert("请在文本框中输入要问候的名字");
+					}else{
+						alert("Hello "+this.greetingName);
+					}
+				}
+			}
+		})
+		var app3=new Vue({
+			el:"#app3",
+			methods:{
+				say:function(message,event){
+					alert(message);
+					console.log(event);
+				}
+			}
+		})
+		var app4=new Vue({
+			el:"#app4",
+			methods:{
+				doThis:function() {
+					console.log("子元素点击");
+				}
+			}
+		})
+		var app5=new Vue({
+			el:"#app5",
+			methods:{
+				sayHi:function(){
+					alert("Hello");
+				}
+			}
+		})
+
+	</script>
+</body>
+</html>
