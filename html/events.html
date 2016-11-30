@@ -3,107 +3,149 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>事件处理器 - vue.js</title>
+	<title>计算属性 - vue.js</title>
+	<link rel="stylesheet" href="">
 	<script src="../script/vue.js"></script>
 </head>
 <body>
 	<h2>
-		<a href="http://cn.vuejs.org/v2/guide/events.html" target="_blank">事件处理器</a>
+		<a href="http://cn.vuejs.org/v2/guide/computed.html" target="_blank">计算属性</a>
 	</h2>
 
-	<h3>监听事件</h3>
+	<h3>计算属性</h3>
+
+	<h4>基础例子</h4>
+	<p>绑定文本使用 {{ }},v-once指令使数据改变时，插值处的内容不会更新</p>
 	<div id="app1">
-		<button type="button" v-on:click="counter+=1">增加1</button>
-		<p>这个按钮被点击了{{counter}}次。使用v-on指令监听DOM事件来触发一些JavaScript代码</p>
+		<p>Original message:"{{message}}"</p>
+		<p>Coputed reversed message:"{{reversedMessage}}"</p>
 	</div>
 
-	<h3>方法事件处理器</h3>
-	<div id="app2">
-		<p>v-on页可以接收一个定义的方法来调用</p>
-		<input type="text" v-model="greetingName">
-		<button type="button" v-on:click="greet">greet</button>
-	</div>
+	<h4>计算缓存 vs Methods</h4>
+	<p>计算属性：基于它的依赖缓存，只有他的相关依赖发生改变时才会重新取值</p>
+	<p>method调用：每次重新渲染的时候，method调用总会执行函数</p>
 
-	<h3>内联处理器方法</h3>
-	<div id="app3">
-		<p>v-on也可以用内联JavaScript语句</p>
-		<button type="button" v-on:click="say('HI',$event)">Say Hi</button>
-		<button type="button" v-on:click="say('What',$event)">Say Hi</button>
-	</div>
+	<h4>计算属性 vs Watched Property</h4>
+	<p>计算属性：</p>
+	<div id="app2">{{fullName}}</div>
+	<p>Wached Property</p>
+	<div id="app3">{{fullName}}</div>
 
-	<h3>事件修饰符</h3>
-	<div id="app4" onclick="alert('子元素点击事件冒泡')">
-		<p>v-on:click.stop 阻止单击事件冒泡</p>
-		<button v-on:click.stop="doThis">v-on:click.stop 阻止单击事件冒泡</button>
-		<p>提交事件不再重载页面</p>
-		<form action="http://www.baidu.com" method="get" accept-charset="utf-8" v-on:submit.prevent v-on:click.stop>
-			<input type="text" name="" value="" placeholder="">
-			<button type="submit">提交</button>
-		</form>
-		<p>添加事件侦听器时使用事件捕获模式 v-on:click.capture</p>
-		<p>只当事件在该元素本身（而不是子元素）触发时触发回调 v-on:click.slf</p>
-	</div>
+	<h4>计算setter</h4>
+	<div id="app4">{{fullName}}</div>
 
-	<h3>按键修饰符</h3>
+	<h3>观察Watchers</h3>
 	<div id="app5">
-		<p>在该输入框中只有敲enter键才会弹出 Hello</p>
-		<input type="text" name="" value="" placeholder="" v-on:keyup.enter="sayHi">
+		<p>
+			Ask a yes/no question:
+			<input type="text" v-model="question"/>
+		</p>
+		<p>{{answer}}</p>
 	</div>
-
-	<h3>为什么在HTML中监听事件？</h3>
-	<p>使用v-on监听事件的好处：</p>
-	<p>1.扫一眼 HTML 模板便能轻松定位在 JavaScript 代码里对应的方法</p>
-	<p>2.因为你无须在 JavaScript 里手动绑定事件，你的 ViewModel 代码可以是非常纯粹的逻辑，和 DOM 完全解耦，更易于测试。</p>
-	<p>3.当一个 ViewModel 被销毁时，所有的事件处理器都会自动被删除。你无须担心如何自己清理它们。</p>
-
 	<script>
-		var app1=new Vue({
-			el:"#app1",
-			data:{
-				counter:0
+	var app1=new Vue({
+		el:"#app1",
+		data:{
+			message:"Hello Vue"
+		},
+		computed:{
+			//a computed getter
+			reversedMessage:function(){
+				//'this' points to the app1 instance
+				return this.message.split('').reverse().join('')
 			}
-		})
-		var app2=new Vue({
-			el:"#app2",
-			data:{
-				greetingName:""
+		}
+	})
+
+	var app2=new Vue({
+		el:"#app2",
+		data:{
+			firstName:"Zhang",
+			lastName:"Kaitlyn",
+			fullName:"Zhang Kaitlyn"
+		},
+		watch:{
+			firstName:function(val){
+				this.fullName=val+' '+this.lastName
 			},
-			methods:{
-				greet:function(){
-					if (this.greetingName=="") {
-						alert("请在文本框中输入要问候的名字");
-					}else{
-						alert("Hello "+this.greetingName);
-					}
+			lastName:function(val){
+				this.fullName=this.firstName+' '+val
+			}
+		}
+	})
+	var app3=new Vue({
+		el:"#app3",
+		data:{
+			firstName:"Zhang",
+			lastName:"Kaitlyn"
+		},
+		computed:{
+			fullName:function(){
+				return this.firstName+" "+this.lastName
+			}
+		}
+	})
+	var app4=new Vue({
+		el:"#app4",
+		data:{
+			firstName:"Zhang",
+			lastName:"Kaitlyn"
+		},
+		computed:{
+			fullName:{
+				get:function(){
+					return this.firstName+" "+this.lastName
+				},
+				set:function(newValue){
+					var names=newValue.split(" ");
+					this.firstName=names[0];
+					this.lastName=names[names.length-1]
 				}
 			}
-		})
-		var app3=new Vue({
-			el:"#app3",
-			methods:{
-				say:function(message,event){
-					alert(message);
-					console.log(event);
-				}
-			}
-		})
-		var app4=new Vue({
-			el:"#app4",
-			methods:{
-				doThis:function() {
-					console.log("子元素点击");
-				}
-			}
-		})
+			
+		}
+	})
+	</script>
+	<script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
+	<script src="https://unpkg.com/lodash@4.13.1/lodash.min.js"></script>
+	<script>
 		var app5=new Vue({
 			el:"#app5",
-			methods:{
-				sayHi:function(){
-					alert("Hello");
+			data:{
+				question:"",
+				answer:"I cannot give you an answer until you ask a question!"
+			},
+			watch:{
+				question:function(newQuestion){
+					this.answer="Waiting for you to stop typing...";
+					this.getAnswer();
 				}
+			},
+			methods:{
+				 // _.debounce 是一个通过 lodash 限制操作频率的函数。
+    // 在这个例子中，我们希望限制访问yesno.wtf/api的频率
+    // ajax请求直到用户输入完毕才会发出
+    // 学习更多关于 _.debounce function (and its cousin
+    // _.throttle), 参考: https://lodash.com/docs#debounce
+				getAnswer:_.debounce(
+					function(){
+						var vm=this;
+						if(this.question.indexOf("?")===-1){
+							vm.answer="Questions usually contain a question mark.;-)";
+							return
+						}
+						vm.answer="Think...";
+						axios.get("https://yesno.wtf/api").then(function(response){
+							vm.answer=_.capitalize(response.data.answer)
+						}).catch(function(error){
+							vm.answer="Error!Could not reach the API. "+error 
+						}),
+						// 这是我们为用户停止输入等待的毫秒数
+						500
+					}
+					)
 			}
 		})
-
 	</script>
 </body>
 </html>

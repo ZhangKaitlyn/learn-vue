@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>表单控件绑定 - vue.js</title>
+	<script src="../script/vue.js"></script>
+</head>
+<body>
+	<h2>
+		<a href="http://cn.vuejs.org/v2/guide/events.html" target="_blank">表单控件绑定</a>
+	</h2>
+
+	<h3>基础用法</h3>
+
+	<h4>文本</h4>
+	<div id="app1">
+		<input type="text" v-model="message" placeholder="edit me">
+		<p>Message is:{{message}}</p>
+	</div>
+
+	<h4>多行文本</h4>
+	<div id="app2">
+		<span>Multiline message is:</span>
+		<p style="white-space: pre;">{{message}}</p>
+		<textarea name="" id="" cols="30" rows="10" v-model="message" placeholder="add multiple lines"></textarea>
+	</div>
+
+	<h4>复选框</h4>
+	<div id="app3">
+		<input id="Jack" type="checkbox" v-model="checkedNames" value="Jack">
+		<label for="Jack" value="Jack">Jack</label>
+		<input id="checkedNames2" type="checkbox" v-model="checkedNames" value="John">
+		<label for="checkedNames2">John</label>
+		<input id="checkedNames3" type="checkbox" v-model="checkedNames" value="Mike">
+		<label for="checkedNames3">Mike</label>
+		<br>
+		<span>Checked names:{{checkedNames}}</span>
+	</div>
+
+	<h4>单选按钮</h4>
+	<div id="app4">
+		<input type="radio" id="one" value="one" v-model="radioPicked">
+		<label for="one">one</label>
+		<input type="radio" id="two" value="two" v-model="radioPicked">
+		<label for="two">two</label>
+		<br>
+		<span>Picked:{{radioPicked}}</span>
+	</div>
+
+	<script>
+		var app1=new Vue({
+			el:"#app1",
+			data:{
+				message:""
+			}
+		})
+		var app2=new Vue({
+			el:"#app2",
+			data:{
+				message:""
+			}
+		})
+		var app3=new Vue({
+			el:"#app3",
+			data:{
+				checkedNames:[]
+			}
+		})
+		var app4=new Vue({
+			el:"#app4",
+			data:{
+				radioPicked:[]
+			}
+		})
+	</script>
+</body>
+</html>
