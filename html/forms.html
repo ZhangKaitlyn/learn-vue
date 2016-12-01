@@ -9,7 +9,7 @@
 </head>
 <body>
 	<h2>
-		<a href="http://cn.vuejs.org/v2/guide/events.html" target="_blank">表单控件绑定</a>
+		<a href="http://cn.vuejs.org/v2/guide/forms.html" target="_blank">表单控件绑定</a>
 	</h2>
 
 	<h3>基础用法</h3>
@@ -49,6 +49,69 @@
 		<span>Picked:{{radioPicked}}</span>
 	</div>
 
+	<h4>选择列表</h4>
+	<div id="app5">
+		<select v-model="selected">
+			<option>A</option>
+			<option>B</option>
+			<option>C</option>
+			<option>D</option>
+		</select>
+		<br>
+		<span>Selected:{{selected}}</span>
+	</div>
+	<div id="app6">
+		<select v-model="selected">
+			<option v-for="option in options" v-bind:value="option.value">{{option.text}}</option>
+		</select>
+		<br>
+		<span>Selected:{{selected}}</span>
+	</div>
+	
+	<h3>绑定value</h3>
+
+	<h4>复选框</h4>
+	<div id="app7">
+		<input type="checkbox" v-model="toggle" v-bind:true-value="a" v-bind:false-value="b">
+		<br>
+		<span>Toggle Vaule:{{toggle}}</span>
+	</div>
+
+	<h4>单选按钮</h4>
+	<div id="app8">
+		<input type="radio" v-model="picked" v-bind:value="a">
+		<br>
+		<span>Picked value:{{picked}}</span>
+	</div>
+
+	<h4>选择列表设置</h4>
+	<div id="app9">
+		<select v-model="selected">
+			<option v-bind:value="{number:123}">123</option>
+		</select>
+		<br>
+		<span>selected:{{selected.number}}</span>
+	</div>
+
+	<h3>修饰符</h3>
+
+	<h4>.lazy</h4>
+	<div id="app10">
+		<input type="text" v-model.lazy="message" placeholder="edit me">
+		<p>Message is:{{message}}</p>
+	</div>
+
+	<h4>.number</h4>
+	<div id="app11">
+		<input type="number" v-model.number="a">+<input type="number" v-model.number="b">=<span>{{result}}</span>
+	</div>
+
+	<h4>.trim</h4>
+	<div id="app12">
+		<input type="text" v-model="message" placeholder="edit me">
+		<p>Message is:{{message}}</p>
+	</div>
+
 	<script>
 		var app1=new Vue({
 			el:"#app1",
@@ -72,6 +135,68 @@
 			el:"#app4",
 			data:{
 				radioPicked:[]
+			}
+		})
+		var app5=new Vue({
+			el:"#app5",
+			data:{
+				selected:""
+			}
+		})
+		var app6=new Vue({
+			el:"#app6",
+			data:{
+				selected:"",
+				options:[
+					{text:"One",value:"A"},
+					{text:"Two",value:"B"},
+					{text:"Three",value:"C"},
+				]
+			}
+		})
+		var app7=new Vue({
+			el:"#app7",
+			data:{
+				toggle:"",
+				a:"A",
+				b:"B"
+			}
+		})
+		var app8=new Vue({
+			el:"#app8",
+			data:{
+				picked:"",
+				a:true
+			}
+		})
+		var app9=new Vue({
+			el:"#app9",
+			data:{
+				selected:""
+			}
+		})
+		var app10=new Vue({
+			el:"#app10",
+			data:{
+				message:""
+			}
+		})
+		var app11=new Vue({
+			el:"#app11",
+			data:{
+				a:0,
+				b:0
+			},
+			computed:{
+				result:function(){
+					return this.a+this.b;
+				}
+			}
+		})
+		var app12=new Vue({
+			el:"#app12",
+			data:{
+				message:""
 			}
 		})
 	</script>
