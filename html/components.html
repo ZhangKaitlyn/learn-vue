@@ -38,7 +38,43 @@
 
 	<h4>构成组件</h4>
 	<p>在Vue.js中，父子组件的关系可以总结为props down、events up。父组件通过props向下传递数据给子组件，子组件通过events给父组件发送消息</p>
-	<img src="../images/props-events.png" alt="Vue.js中父子组件的关系">
+	<img src="../images/props-events.png" alt="Vue.js中父子组件的关系" style="width: 200px;">
+
+	<h3>Props</h3>
+
+	<h4>使用Props传递数据</h4>
+	<div id="app5">
+		<child message="信息来源于父组件"></child>
+	</div>
+
+	<h4>camelCase vs.kebab-case</h4>
+	<p>当使用非字符串模板时，prop的名字形式会从camelCase转为kebab-case(短横线隔开)</p>
+
+	<h4>动态Props</h4>
+	<div id="app6">
+		<input type="text" v-model="parentMsg">
+		<br>
+		<child v-bind:message="parentMsg"></child>
+	</div>	
+
+	<h4>字面量语法 vs 动态语法</h4>
+	<p>如果想传递一个实际的 JavaScript 数字，需要使用 v-bind ，从而让它的值被当作 JavaScript 表达式计算</p>
+
+	<h4>单向数据流</h4>
+	<p>两种改变prop的情况：</p>
+	<p>1.定义一个局部data属性，并将prop的初始值作为局部数据的初始值</p>
+	<p>2.定义一个computed属性，此属性从prop的值计算得出</p>
+
+	<h4>Prop验证</h4>
+	<div id="app7">
+		<input type="number" v-model="parentMsg">
+		<br>
+		<child v-bind:message="parentMsg"></child>
+	</div>
+
+	<h3>自定义事件</h3>
+
+	<h4>使用v-on绑定自定义事件</h4>
 	<script>
 		Vue.component("my-component",{
 			template:"<div>A custom component!</div>"
@@ -76,7 +112,44 @@
 				"my-component":app4Com
 			}
 		})
-
+		var app5Com={
+			props:["message"],
+			template:"<span>{{message}}</span>"
+		}
+		var app5=new Vue({
+			el:"#app5",
+			components:{
+				"child":app5Com
+			}
+		})
+		var app6Com={
+			props:["message"],
+			template:"<span>{{message}}</span>"
+		}
+		var app6=new Vue({
+			el:"#app6",
+			data:{
+				"parentMsg":""
+			},
+			components:{
+				"child":app6Com
+			}			
+		})
+		var app7Com={
+			props:{
+				message:Number
+			},
+			template:"<span>{{message}}</span>"
+		}
+		var app7=new Vue({
+			el:"#app7",
+			data:{
+				"parentMsg":0
+			},
+			components:{
+				"child":app7Com
+			}			
+		})
 	</script>
 </body>
 </html>
