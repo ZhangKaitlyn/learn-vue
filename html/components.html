@@ -37,7 +37,9 @@
 	</div>
 
 	<h4>构成组件</h4>
-	<p>在Vue.js中，父子组件的关系可以总结为props down、events up。父组件通过props向下传递数据给子组件，子组件通过events给父组件发送消息</p>
+	<p>
+		在Vue.js中，父子组件的关系可以总结为props down、events up。父组件通过props向下传递数据给子组件，子组件通过events给父组件发送消息
+	</p>
 	<img src="../images/props-events.png" alt="Vue.js中父子组件的关系" style="width: 200px;">
 
 	<h3>Props</h3>
@@ -55,10 +57,12 @@
 		<input type="text" v-model="parentMsg">
 		<br>
 		<child v-bind:message="parentMsg"></child>
-	</div>	
+	</div>
 
 	<h4>字面量语法 vs 动态语法</h4>
-	<p>如果想传递一个实际的 JavaScript 数字，需要使用 v-bind ，从而让它的值被当作 JavaScript 表达式计算</p>
+	<p>
+		如果想传递一个实际的 JavaScript 数字，需要使用 v-bind ，从而让它的值被当作 JavaScript 表达式计算
+	</p>
 
 	<h4>单向数据流</h4>
 	<p>两种改变prop的情况：</p>
@@ -75,6 +79,17 @@
 	<h3>自定义事件</h3>
 
 	<h4>使用v-on绑定自定义事件</h4>
+	<div id="app8">
+		<p>{{ total }}</p>
+		<button-counter @increment="incrementTotal"></button-counter>
+		<button-counter @increment="incrementTotal"></button-counter>
+	</div>
+
+	<h4>使用自定义事件的表单输入组件</h4>
+	<div id="app9">
+		<p>一个非常简单的货币输入：</p>
+		<currency-input v-model="price"></currency-input>
+	</div>
 	<script>
 		Vue.component("my-component",{
 			template:"<div>A custom component!</div>"
@@ -149,6 +164,55 @@
 			components:{
 				"child":app7Com
 			}			
+		})
+		var app8Com={
+			template:"<button @click='increment'>{{ counter }}</button>",
+			data:function(){
+				return{
+					counter:0
+				}
+			},
+			methods:{
+				increment:function(){
+					this.counter += 1;
+					this.$emit("increment");
+				}
+			}
+		}
+		var app8=new Vue({
+			el:"#app8",
+			data:{
+				total:0
+			},
+			methods:{
+				incrementTotal:function(){
+					this.total+=1;
+				}
+			},
+			components:{
+				"button-counter":app8Com
+			}
+		})
+		var app9Com={
+			template:"<span>￥<input ref='input' :value='value' @input='updateValue($event.target.value)'/></span>",
+			props:["value"],
+			methods:{
+				updateValue: function (value) {
+      var formattedValue = value
+        .trim()
+        .slice(0, value.indexOf('.') + 3)
+      if (formattedValue !== value) {
+        this.$refs.input.value = formattedValue
+      }
+      this.$emit('input', Number(formattedValue))
+    }
+			}
+		}
+		var app9=new Vue({
+			el:"#app9",
+			components:{
+				"currency-input":app9Com
+			}
 		})
 	</script>
 </body>
