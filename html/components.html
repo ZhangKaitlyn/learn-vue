@@ -90,6 +90,14 @@
 		<p>一个非常简单的货币输入：</p>
 		<currency-input v-model="price"></currency-input>
 	</div>
+
+	<h4>非父子组件通信</h4>
+	<p>非父子组件通信：在简单场景下，使用一个空的Vue实例作为中央事件总线；在更多复杂的情况下，使用专门的 <a href="http://cn.vuejs.org/v2/guide/state-management.html" target="_blank">状态管理模式</a></p>
+
+	<h3>使用Slots分发内容</h3>
+
+	<h4>编译作用域</h4>
+	
 	<script>
 		Vue.component("my-component",{
 			template:"<div>A custom component!</div>"
@@ -198,18 +206,24 @@
 			props:["value"],
 			methods:{
 				updateValue: function (value) {
-      var formattedValue = value
-        .trim()
-        .slice(0, value.indexOf('.') + 3)
-      if (formattedValue !== value) {
-        this.$refs.input.value = formattedValue
-      }
-      this.$emit('input', Number(formattedValue))
-    }
+					var formattedValue = value;
+					if (value.indexOf(".")>=0) {
+						formattedValue = value
+					.trim()
+					.slice(0, value.indexOf('.') + 3);
+					}
+					if (formattedValue !== value) {
+						this.$refs.input.value = formattedValue
+					}
+					this.$emit('input', Number(formattedValue))
+				}
 			}
 		}
 		var app9=new Vue({
 			el:"#app9",
+			data:{
+				price:0
+			},
 			components:{
 				"currency-input":app9Com
 			}
