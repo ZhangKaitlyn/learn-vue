@@ -97,6 +97,29 @@
 	<h3>使用Slots分发内容</h3>
 
 	<h4>编译作用域</h4>
+	<p>组件作用域：父组件模板的内容在父组件作用域内编译；子组件模板的内容在子组件作用域内编译</p>
+	<p>分发内容是在辅助间作用域内编译</p>
+
+	<h4>单个Slot</h4>
+	<div id="app10">
+		<h4>I am the parent title</h4>
+		<my-component>
+			<p>This is some original content</p>
+			<p>This is some more original content</p>
+		</my-component>
+	</div>
+
+	<h4>具名Slots</h4>
+	<div id="app11">
+		<app-layout>
+			<h4 slot="header">Here might be a page title</h4>
+			<p>A paragraph for the main content.</p>
+			<p>And another one.</p>
+			<p slot="footer">Here's some contact info</p>
+		</app-layout>
+	</div>
+
+	<h3>动态组件</h3>
 	
 	<script>
 		Vue.component("my-component",{
@@ -226,6 +249,24 @@
 			},
 			components:{
 				"currency-input":app9Com
+			}
+		})
+		var app10Com={
+			template:"<div><h5>I am the child title</h5><slot>如果没有分发内容则显示我</slot></div>"
+		}
+		var app10=new Vue({
+			el:"#app10",
+			components:{
+				"my-component":app10Com
+			}
+		})
+		var app11Com={
+			template:'<div class="container"><header><slot name="header"></slot></header><main><slot></slot></main><footer><slot name="footer"></slot></footer></div>'
+		}
+		var app11=new Vue({
+			el:"#app11",
+			components:{
+				"app-layout":app11Com
 			}
 		})
 	</script>
