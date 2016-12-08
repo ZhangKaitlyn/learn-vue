@@ -120,6 +120,33 @@
 	</div>
 
 	<h3>动态组件</h3>
+
+	<h4>keep-alive</h4>
+	<div id="app12">
+		<keep-alive>
+			<component v-bind:is="currentView"></component>
+		</keep-alive>
+	</div>
+
+	<h3>杂项</h3>
+
+	<h4>编写可复用组件</h4>
+	<p>Vue组件的API来自三部分：props、events和slots：</p>
+	<p>1.props：允许外部环境传递数据给组件</p>
+	<p>2.events：允许组件触发外部环境的副作用</p>
+	<p>3.Slots：允许外部环境将额外的内容组合在组件中</p>
+
+	<h4>子组件索引</h4>
+	<div id="app13">
+		<user-profile ref="profile"></user-profile>
+	</div>
+
+	<h4>异步组件</h4>
+	<h4>组件命名约定</h4>
+	<h4>递归组件</h4>
+	<h4>内联模板</h4>
+	<h4>X-Templates</h4>
+	<h4>使用v-once的低级静态组件</h4>
 	
 	<script>
 		Vue.component("my-component",{
@@ -269,6 +296,32 @@
 				"app-layout":app11Com
 			}
 		})
+		var app12=new Vue({
+			el:"#app12",
+			data:{
+				currentView:"view2"
+			},
+			components:{
+				"view1":{
+					template:"<p>我是view1</p>"
+				},
+				"view2":{
+					template:"<p>我是view2</p>"
+				},
+				"view3":{
+					template:"<p>我是view3</p>"
+				},
+			}
+		})
+		var app13=new Vue({
+			el:"#app13",
+			components:{
+				"user-profile":{
+					template:"<p>通过ref为子组件指定一个索引ID</p>"
+				}
+			}
+		})
+		console.log(app13.$refs.profile);
 	</script>
 </body>
 </html>
