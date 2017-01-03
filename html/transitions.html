@@ -5,8 +5,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>过渡效果</title>
 	<link rel="stylesheet" href="https://unpkg.com/animate.css@3.5.1/animate.min.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.3/velocity.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
+	<script src="../script/velocity.min.js"></script>
+	<script src="../script/lodash.min.js"></script>
 	<script src="../script/vue.js"></script>
 	<style>
 		img{
@@ -204,6 +204,20 @@
 	</div>
 
 	<h3>可复用的过渡</h3>
+	<div id="app14">
+		<button v-on:click="show=!show">Toggle</button>
+		<my-special-transition v-bind:show="show"></my-special-transition>
+	</div>
+
+	<h3>动态过渡</h3>
+	<div id="app15">
+		Fade In: <input type="range" v-model="fadeInDuration" min="0" v-bind:max="maxFadeDuration">
+		Fade Out: <input type="range" v-model="fadeOutDuration" min="0" v-bind:max="maxFadeDuration">
+		<transition v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" v-on:leave="leave">
+			<p v-if="show"> hello</p>
+		</transition>
+		<button v-on:click="stop=true">Stop it</button>
+	</div>
 
 	<script>
 		var app1=new Vue({
@@ -385,6 +399,52 @@
 					setTimeout(function(){
 						Velocity(el,{opacity:0,height:0},{complete:done})
 					},delay)
+				}
+			}
+		})
+		var app14=new Vue({
+			el:"#app14",
+			data:{
+				show:true
+			},
+			components:{
+				"my-special-transition":{
+					props:["show"],
+					template:"<transition name='fade'>\
+					<p v-if='show'>hello</p>\
+					</transition>"
+				}
+			}
+		})
+		var app15=new Vue({
+			el:"#app15",
+			data:{
+				show:true,
+				fadeInDuration:1000,
+				fadeOutDuration:1000,
+				maxFadeDuration:2000,
+				stop:false
+			},
+			mounted:function(){
+				this.show=false
+			},
+			methods:{
+				beforeEnter:function(el){
+					el.style.opacity=0
+				},
+				enter:function(el,done){
+					var vm=this;
+					Velocity(el,{opacity:1},{duration:this.fadeInDuration,complete:function(){
+						done();
+						if(!vm.stop) vm.show=false;
+					}})
+				},
+				leave:function(el,done){
+					var vm=this;
+					Velocity(el,{opacity:0},{duration:this.fadeOutDuration,complete:function(){
+						done();
+						if(!vm.stop) vm.show=true;
+					}})
 				}
 			}
 		})
