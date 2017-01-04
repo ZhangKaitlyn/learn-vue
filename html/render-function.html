@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Render函数</title>
+	<script src="../script/vue.js"></script>
+</head>
+<body>
+	<a href="http://cn.vuejs.org/v2/guide/render-function.html" target="_blank">Render函数</a>
+
+	<h3>基础</h3>
+	<div id="app1">
+		<anchored-heading :level="1">Hello Vue</anchored-heading>
+	</div>
+	<script>
+		var app1=new Vue({
+			el:"#app1",
+			components:{
+				"anchored-heading":{
+					render:function(createElement){
+						return createElement('h'+this.level,this.$slots.default);
+					},
+					props:{
+						level:{
+							type:Number,
+							required:true
+						}
+					}
+				}
+			}
+			
+		})
+	</script>
+
+	<h3>createElement参数</h3>
+
+	<h4>完整数据对象</h4>
+	<h4>完整示例</h4>
+	<div id="app2">
+		<anchor-heading :level="1">Hello Vue</anchor-heading>
+	</div>
+	<script>
+		var getChildrenTextContent=function(children){
+			return children.map(function(node){
+				return node.children?getChildrenTextContent(node.children):node.text
+			}).join("");
+		}
+		var app2=new Vue({
+			el:"#app2",
+			components:{
+				"anchor-heading":{
+					render:function(createElement){
+						var headingId=getChildrenTextContent(this.$slots.default).toLowerCase().replace(/\W+/g,"-").replace(/(^\-|\-$)/g,"");
+						return createElement(
+							"h"+this.level,
+							[
+							createElement("a",{
+								attrs:{
+									name:headingId,
+									href:"#"+headingId
+								}
+							},this.$slots.default)
+							]
+							)
+					},
+					props:{
+						level:{
+							type:Number,
+							required:true
+						}
+					}
+				}
+			}
+		})
+	</script>
+	<h4>约束</h4>
+	<p>VNodes必须唯一</p>
+
+	<h3>使用JavaScript代替模板功能</h3>
+
+	<h4>v-if and v-for</h4>
+	<div id="app3">
+		<anchor-api :items="[{'name':'Kaitlyn1'},{'name':'Kaitlyn2'},{'name':'Kaitlyn3'}]"></anchor-api>
+	</div>
+	<script>
+		var app3=new Vue({
+			el:"#app3",
+			components:{
+				"anchor-api":{
+					render:function(createElement){
+						if(this.items.length){
+							return createElement("ul",this.items.map(function(item){
+								return createElement("li",item.name);
+							}))
+						}else{
+							return createElement("p","No items found.")
+						}
+					},
+					props:{
+						items:{
+							type:Array
+						}
+					}
+				}
+			}
+		})
+	</script>
+
+	<h4>v-model</h4>
+	<div id="app4">
+		<anchor-v-model ></anchor-v-model>
+	</div>
+	<script>
+		var app4=new Vue({
+			el:"#app4",
+			components:{
+				"anchor-v-model":{
+					render:function(createElement){
+						var vm=this;
+						return createElement("input",{
+							domProps:{
+								value:vm.value
+							},
+							on:{
+								input:function(event){
+									vm.value=event.target.value;
+								}
+							}
+						});
+					},
+					props:{
+						value:String
+					}
+				}
+			}
+		})
+	</script>
+</body>
+</html>
