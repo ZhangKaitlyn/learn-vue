@@ -119,11 +119,15 @@
 					render:function(createElement){
 						var vm=this;
 						return createElement("input",{
+							// DOM 属性
 							domProps:{
 								value:vm.value
 							},
+							// 事件监听器基于 "on"
+							// 所以不再支持如 v-on:keyup.enter 修饰器
+							// 需要手动匹配 keyCode
 							on:{
-								input:function(event){
+								blur:function(event){
 									vm.value=event.target.value;
 								}
 							}
@@ -136,5 +140,20 @@
 			}
 		})
 	</script>
+
+	<h4>Event & Key Modifiers</h4>
+	<img src="../images/render_img1.png" alt="">
+	<img src="../images/render_img2.png" alt="">
+
+	<h4>Slots</h4>
+
+	<h3>JSX</h3>
+	<a href="https://github.com/vuejs/babel-plugin-transform-vue-jsx#usage" target="_blank">更多关于JSX映射到JavaScript</a>
+
+	<h3>函数化组件</h3>
+
+	<h4>slots()和children对比</h4>
+
+	<h3>模板编译</h3>
 </body>
 </html>
