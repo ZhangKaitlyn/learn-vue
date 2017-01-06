@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>自定义指令</title>
+	<script src="../script/vue.js"></script>
+</head>
+<body style="word-wrap: break-word;">
+	<a href="http://cn.vuejs.org/v2/guide/custom-directive.html" target="_blank">自定义指令</a>
+	
+	<h3>简介</h3>
+	<div id="app1">
+		<input v-focus>
+	</div>
+
+	<h3>钩子函数</h3>
+	<p>指令定义函数提供了几个钩子函数</p>
+	<ul>
+		<li>bind：只调用一次，指令第一次绑定到元素时调用，用这个钩子函数可以定义一个在绑定时执行一次的初始化动作</li>
+		<li>inserted：被绑定元素插入父节点时调用（父节点存在即可调用，不必存在于document中）</li>
+		<li>update：被绑定元素所在的模板更新时调用，而不论绑定值是否变化。通过比较更新前后的绑定值，可以忽略不必要的模板更新</li>
+		<li>componentUpdated：被绑定元素所在模板完成一次更新周期时调用</li>
+		<li>unbind：只调用一次，指令与元素解绑时调用</li>
+	</ul>
+
+	<h3>钩子函数参数</h3>
+	<div id="app2" v-demo:hello.a.b="message"></div>
+	
+	<h3>函数简写</h3>
+	<div id="app3" v-color="red" style="width: 100px;height: 100px;"></div>
+
+	<h3>对象字面量</h3>
+	<div id="app4" v-demo="{color:'red',text:'Hello!'}"></div>
+	<script>
+		var app1=new Vue({
+			el:"#app1",
+			directives:{
+				focus:{//注册一个自定义指令 v-focus
+					inserted:function(el){
+						el.focus();
+					}
+				}
+			}
+		})
+
+		var app2=new Vue({
+			el:"#app2",
+			data:{
+				message:"hello!"
+			},
+			directives:{
+				demo:{
+					bind:function(el,binding,vnode){
+						var s=JSON.stringify;
+						el.innerHTML="name:"+s(binding.name)+"<br>value:"+s(binding.value)+"<br>expression:"+s(binding.expression)+"<br>argument:"+s(binding.arg)+"<br>modifiers"+s(binding.modifiers)+"<br>vnode keys:"+Object.keys(vnode).join(",");
+					}
+				}
+			}
+		})
+
+		var app3=new Vue({
+			el:"#app3",
+			data:{
+				red:"red"
+			},
+			directives:{
+				color:function(el,binding){
+					el.style.backgroundColor=binding.value;
+				}
+			}
+		})
+
+		var app4=new Vue({
+			el:"#app4",
+			directives:{
+				demo:function(el,binding){
+					el.innerHTML="color:"+binding.value.color+"<br>text:"+binding.value.text;
+				}
+			}
+		})
+	</script>
+</body>
+</html>
