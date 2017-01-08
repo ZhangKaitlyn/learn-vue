@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>混合</title>
+	<script src="../script/vue.js"></script>
+</head>
+<body>
+	<a href="http://cn.vuejs.org/v2/guide/mixins.html" target="_blank">混合</a>
+
+	<h3>基础</h3>
+	<div id="app1">
+	</div>
+
+	<h3>选项合并</h3>
+	<p>混合对象的钩子将在组件自身钩子之前调用</p>
+	<div id="app2"></div>
+	<div id="app3"></div>
+
+	<h3>全局混合</h3>
+	<div id="app4"></div>
+
+	<h3>自定义选项混合策略</h3>
+
+	<script>
+		var app1=new Vue({
+			el:"#app1",
+			mixins:[{
+				created:function(){
+					this.hello();
+				},
+				methods:{
+					hello:function(){
+						console.log("Hello from mixin");
+					}
+				}
+			}]
+		})
+
+		var app2=new Vue({
+			el:"#app2",
+			created:function(){
+				console.log("组件钩子被调用");
+			},
+			mixins:[{
+				created:function(){
+					console.log("混合对象的钩子被调用");
+				}
+			}]
+		})
+
+		var app3=new Vue({
+			el:"#app3",
+			methods:{
+				bar:function(){
+					console.log("bar");
+				},
+				conflicting:function(){
+					console.log("from self");
+				}
+			},
+			mixins:[{
+				methods:{
+					foo:function(){
+						console.log("foo");
+					},
+					conflicting:function(){
+						console.log("from mixin");
+					}
+				}
+				
+			}],
+			myOption:"app3!"
+		})
+		app3.foo();
+		app3.bar();
+		app3.conflicting();
+
+		Vue.mixin({
+			created:function(){
+				var myOption=this.$options.myOption;
+				if(myOption){
+					console.log(myOption);
+				}
+			}
+		})
+		var app4=new Vue({
+			el:"#app4",
+			myOption:"app4!"
+		})
+
+	</script>
+</body>
+</html>
