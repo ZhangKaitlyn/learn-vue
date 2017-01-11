@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>单文件组件</title>
+	<script src="../script/vue.js"></script>
+</head>
+<body>
+<a href="http://cn.vuejs.org/v2/guide/single-file-components.html" target="_blank">单文件组件</a>
+
+<h3>介绍</h3>
+<p>使用Vue.component来定义全局组件缺点：</p>
+<ul>
+	<li>全局定义 强制要求每个component中的命名不得重复</li>
+	<li>字符串模板 缺乏语法高亮，在HTML有多行的时候，需要用到丑陋的 \ </li>
+	<li>不支持CSS 意味着当HTML和JavaScript组件化时，CSS明显被遗漏</li>
+	<li>没有构建步骤 限制只能使用HTML和ES5 JavaScript，而不能使用预处理器</li>
+</ul>
+
+<h3>起步</h3>
+<h4>针对刚接触JavaScript模块开发系统的用户</h4>
+<p>需要学习的附加的工具：</p>
+<ol>
+	<li>Modern JavaScript with ES2015/16： Babel的<a href="https://babeljs.io/docs/learn-es2015/" target="_blank">Learn ES2015 guide</a></li>
+	<li>Node Package Manager(NPM)：从 <a href="https://docs.npmjs.com/getting-started/what-is-npm" target="_blank">Getting Started guide</a>知道10：Unistalling global package</li>
+	<li>参考 <a href="https://github.com/vuejs-templates/webpack-simple" target="_blank">webpack-simple</a></li>
+</ol>
+
+<h4>针对高级用户</h4>
+<a href="https://egghead.io/courses/using-webpack-for-production-javascript-applications" target="_blank">在Egghead.io上的Webpack进阶教程</a>
+</body>
+</html>
